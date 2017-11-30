@@ -47,6 +47,16 @@ interface Passenger {
               'checked-in': passenger.checkedIn
           }">
           </span>
+          <span 
+            class="status" 
+            [style.backgroundColor]="(passenger.checkedIn ? 'green' : 'red')">
+          </span>
+          <span 
+          class="status" 
+          [ngStyle]="{
+            backgroundColor: (passenger.checkedIn ? 'green' : 'red')
+          }">
+        </span>
           {{ i }}: {{ passenger.fullname }}
         </li>
       </ul>
