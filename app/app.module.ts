@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     CommonModule,
-    
+
     PassengerDashboardModule
   ],
   bootstrap: [AppComponent]
