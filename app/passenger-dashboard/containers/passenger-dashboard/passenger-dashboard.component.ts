@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Passenger } from '../../models/passenger.interface';
 import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { PassengerDashboardService } from "../../passenger-dashboard.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'passenger-dashboard',
@@ -16,6 +17,7 @@ import { PassengerDashboardService } from "../../passenger-dashboard.service";
                 [detail]="passenger"
                 (edit)="handleEdit($event)"
                 (remove)="handleRemove($event)"
+                (view)="handleView($event)"
             >
             </passenger-detail>
         </div>
@@ -25,6 +27,7 @@ export class PassengerDashboardComponent implements OnInit {
     passengers: Passenger[];
 
     constructor(
+        private router: Router,
         private passengerService: PassengerDashboardService
     ) {}
 
@@ -61,5 +64,9 @@ export class PassengerDashboardComponent implements OnInit {
                     .filter((passenger: Passenger) => item.id !== passenger.id)
             });
 
+    }
+
+    handleView(item: Passenger) {
+        this.router.navigate(['/passengers', item.id]);
     }
 }

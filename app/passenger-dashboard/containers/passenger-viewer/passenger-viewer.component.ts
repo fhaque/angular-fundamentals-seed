@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import 'rxjs/add/operator/switchMap';
+
 import { PassengerDashboardService } from "../../passenger-dashboard.service";
 
 import { Passenger } from "../../models/passenger.interface";
@@ -8,6 +11,9 @@ import { Passenger } from "../../models/passenger.interface";
   styleUrls: ['passenger-viewer.component.scss'],
   template: `
     <div>
+      <button type="button" (click)="goBack()">
+        &lsaquo; Go Back
+      </button>
       <passenger-form
       [detail]="passenger"
       (update)="onUpdatePassenger($event)">
@@ -18,11 +24,17 @@ import { Passenger } from "../../models/passenger.interface";
 export class PassengerViewerComponent implements OnInit {
   passenger: Passenger;
 
-  constructor(private passengerDashboardService: PassengerDashboardService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private passengerDashboardService: PassengerDashboardService
+  ) {}
   
   ngOnInit() {
-    this.passengerDashboardService
-      .getPassenger(1)
+    this.route.params
+      .switchMap( (params: Passenger) => 
+        this.passengerDashboardService.getPassenger(params.id)
+      )
       .subscribe( (passenger: Passenger) => this.passenger = passenger);
   }
 
@@ -32,5 +44,9 @@ export class PassengerViewerComponent implements OnInit {
       .subscribe( (res: Passenger) => {
         this.passenger = {...res};
       });
+  }
+
+  goBack() {
+    this.router.navigate(['/passengers']);
   }
 }
